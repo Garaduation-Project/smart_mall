@@ -14,13 +14,13 @@ class ThankYouCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: ShapeDecoration(
-          color: const Color.fromRGBO(209, 209, 209, 1),
+          color: const Color(0xFFEDEDED),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 60 + 16, left: 22, right: 22),
+          padding: const EdgeInsets.only(top: 30 + 16, left: 22, right: 22),
           child: Column(
             children: [
               Padding(
@@ -30,8 +30,8 @@ class ThankYouCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color.fromRGBO(88, 80, 141, 1),
-                    fontSize: 25,
-                    fontFamily: 'Inter',
+                    fontSize: 33,
+                    fontFamily: 'Pacifico',
                     fontWeight: FontWeight.w500,
                     height: 0,
                   ),
@@ -68,7 +68,7 @@ class ThankYouCard extends StatelessWidget {
                   Text(
                     '01/24/2023',
                     style: TextStyle(
-                      color: Color.fromRGBO(116, 106, 123, 1),
+                      color: Colors.black,
                       fontSize: 18,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w600,
@@ -97,7 +97,7 @@ class ThankYouCard extends StatelessWidget {
                   Text(
                     '10:15 AM',
                     style: TextStyle(
-                      color: Color.fromRGBO(116, 106, 123, 1),
+                      color: Colors.black,
                       fontSize: 18,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w600,
@@ -126,7 +126,7 @@ class ThankYouCard extends StatelessWidget {
                   Text(
                     'Sam Louis',
                     style: TextStyle(
-                      color: Color.fromRGBO(116, 106, 123, 1),
+                      color: Colors.black,
                       fontSize: 18,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w600,
@@ -157,7 +157,7 @@ class ThankYouCard extends StatelessWidget {
                     r'$50.97',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color.fromRGBO(116, 106, 123, 1),
+                      color: Colors.black,
                       fontSize: 24,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w600,
@@ -174,7 +174,7 @@ class ThankYouCard extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
                 decoration: ShapeDecoration(
-                  color: Color.fromRGBO(116, 106, 123, 0.4),
+                  color: Color.fromRGBO(161, 134, 177, 0.4),
                   shape: RoundedRectangleBorder(),
                 ),
                 child: Row(
