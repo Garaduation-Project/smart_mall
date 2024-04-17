@@ -7,7 +7,7 @@ class ThankYouView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFFf6f6f6),
       body: Transform.translate(
         offset: const Offset(0, -16),
         child: Padding(
@@ -27,7 +27,7 @@ class ThankYouView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2),
                         child: Container(
-                          color: const Color(0xffB8B8B8),
+                          color: Color(0xFF8c8caa),
                           height: 2,
                         ),
                       ),
@@ -39,13 +39,13 @@ class ThankYouView extends StatelessWidget {
                   left: -20,
                   bottom: MediaQuery.sizeOf(context).height * .2,
                   child: CircleAvatar(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Color(0xFFf6f6f6),
                   )),
               Positioned(
                   right: -20,
                   bottom: MediaQuery.sizeOf(context).height * .2,
                   child: CircleAvatar(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Color(0xFFf6f6f6),
                   )),
               Positioned(
                 top: -50 + 70,
@@ -56,11 +56,11 @@ class ThankYouView extends StatelessWidget {
                   backgroundColor: const Color(0xFFEDEDED),
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundColor: Color(0xff34A853),
+                    backgroundColor: const Color(0xFF58508d),
                     child: Icon(
                       Icons.check,
                       size: 50,
-                      color: Colors.black,
+                      color: const Color(0xFFEDEDED),
                     ),
                   ),
                 ),
