@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:parking/paymentScreen2.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'paymob_manager/paymobManager.dart';
 
 class MyCartBody extends StatelessWidget {
   const MyCartBody({super.key});
@@ -51,7 +52,7 @@ class MyCartBody extends StatelessWidget {
                   'Order Subtotal',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 18,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -63,7 +64,7 @@ class MyCartBody extends StatelessWidget {
                   r'42.97$',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 18,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -81,7 +82,7 @@ class MyCartBody extends StatelessWidget {
                   'Discount',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 18,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -93,7 +94,7 @@ class MyCartBody extends StatelessWidget {
                   r'0$',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 18,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -116,7 +117,7 @@ class MyCartBody extends StatelessWidget {
                   'Total',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 24,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -128,7 +129,7 @@ class MyCartBody extends StatelessWidget {
                   r'$50.97',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.black45,
                     fontSize: 24,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w600,
@@ -139,12 +140,7 @@ class MyCartBody extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PaymentDetailsView()),
-                );
-              },
+              onTap: () async => _pay(),
               child: Padding(
                 padding: const EdgeInsets.only(top: 30.0, bottom: 1.0),
                 child: Container(
@@ -180,5 +176,14 @@ class MyCartBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _pay() async {
+    PaymobManager().getPaymentKey(10, "EGP").then((String paymentKey) {
+      launchUrl(
+        Uri.parse(
+            "https://accept.paymob.com/api/acceptance/iframes/840753?payment_token=$paymentKey"),
+      );
+    });
   }
 }
