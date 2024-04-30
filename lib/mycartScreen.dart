@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'paymob_manager/paymobManager.dart';
 
 class MyCartBody extends StatelessWidget {
