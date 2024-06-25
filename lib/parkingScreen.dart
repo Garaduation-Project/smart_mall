@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ class ReservationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Reservation Page',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
@@ -89,8 +89,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code'),
-        backgroundColor: Color.fromRGBO(172, 162, 176, 0.1),
+        title: Text(''),
+        backgroundColor: const Color.fromRGBO(172, 162, 176, 0.3),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -141,7 +141,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             ),
                           ),
                           TextSpan(
-                            text: "      Time to Park",
+                            text: '      iiiiii  v  ',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          TextSpan(
+                            text: " Time to Park",
                             style: TextStyle(
                               wordSpacing: 4,
                               color: Colors.black,
@@ -210,14 +214,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
               ),
             ),
             SizedBox(height: 15),
-            /*Center(
-              child: ElevatedButton(
-                onPressed: bookReservation,
-                child: Text(
-                  'Book Reservation',
-                ),
-              ),
-            ),*/
             GestureDetector(
               onTap: () {
                 Navigator.push(
