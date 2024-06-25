@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-//import 'package:parking/homePage.dart';
+import 'package:parking/homePage.dart';
 import 'package:parking/succesfullybooked.dart';
 
 void main() {
@@ -32,6 +32,30 @@ class _ReservationScreenState extends State<ReservationScreen> {
   TimeOfDay? toTime;
   int bookedUsersCount = 0;
 
+  Future<void> selectFromTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: fromTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != fromTime) {
+      setState(() {
+        fromTime = picked;
+      });
+    }
+  }
+
+  Future<void> selectToTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: toTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != toTime) {
+      setState(() {
+        toTime = picked;
+      });
+    }
+  }
+
   void bookReservation() {
     setState(() {
       if (bookedUsersCount < 8) {
@@ -51,7 +75,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
               SnackBar(
                 content: Text(
                   'Only one hour or less allowed for reservation.',
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(
+                    color: Color.fromRGBO(88, 80, 141, 1),
+                  ),
                 ),
               ),
             );
@@ -61,7 +87,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
             SnackBar(
               content: Text(
                 'Please select reservation time.',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                ),
               ),
             ),
           );
@@ -71,7 +99,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
           SnackBar(
             content: Text(
               'Maximum users reached. Please choose another hour.',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
             ),
           ),
         );
@@ -89,6 +119,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            color: Color.fromRGBO(88, 80, 141, 1),
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+              );
+            },
+          ),
+        ],
         title: Text(''),
         backgroundColor: const Color.fromRGBO(172, 162, 176, 0.3),
       ),
