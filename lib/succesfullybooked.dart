@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -24,6 +26,23 @@ class Successful extends StatelessWidget {
 
 class SuccessPage extends StatelessWidget {
   const SuccessPage({super.key});
+  Widget buildRectangleRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(4, (index) => _buildRectangle())
+          .expand((widget) => [widget, SizedBox(width: 8)])
+          .toList()
+        ..removeLast(),
+    );
+  }
+
+  Widget _buildRectangle() {
+    return Container(
+      width: 71,
+      height: 79,
+      color: Color.fromRGBO(217, 217, 217, 0.9),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,34 +62,94 @@ class SuccessPage extends StatelessWidget {
             },
           ),
         ],
-        title: Text(''),
+        title: Text(
+          'Successfully Booked',
+          style: TextStyle(
+              fontSize: 28,
+              color: Color.fromRGBO(88, 80, 141, 1),
+              fontFamily: 'Pacifico'),
+        ),
         backgroundColor: Color.fromRGBO(172, 162, 176, 0.3),
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.only(top: 0.0, bottom: 10),
+        padding: const EdgeInsets.only(top: 0.0, bottom: 10, left: 10),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 40.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Successfuly Booked',
-                  style: TextStyle(fontFamily: 'CantoraOne', fontSize: 23),
+              children: <Widget>[
+                Container(
+                  width: 100,
+                  height: 150,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.asset(
+                          'images/code.png',
+                          width: MediaQuery.of(context).size.width,
+                          height: 100,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Icon(
-                  Icons.check_circle,
-                  color: Color.fromRGBO(88, 80, 141, 1),
-                  size: 100,
+                SizedBox(
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 200, 0),
+                    child: Text(
+                      'Parking Code',
+                      style: TextStyle(
+                          fontSize: 32,
+                          color: Color.fromRGBO(88, 80, 141, 1),
+                          fontFamily: 'CantoraOne'),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 20),
-                Text(
-                  'Successfully booked!',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+                SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 40),
+                    child: Text(
+                      'Use This code To Entre And Exit The Parking.',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromRGBO(171, 167, 174, 1),
+                          fontFamily: 'Inter'),
+                    ),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 40, 10, 40),
+                  padding: const EdgeInsets.only(left: 40.0, bottom: 10),
+                  child: Row(
+                    children: [
+                      Row(
+                        children: [
+                          buildRectangleRow(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 40),
+                    child: Text(
+                      'Note: This code is available for 1 Hour',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromRGBO(180, 5, 5, 1),
+                          fontFamily: 'Inter'),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 40),
                   child: Center(
                     child: MaterialButton(
                       onPressed: () {
@@ -84,10 +163,10 @@ class SuccessPage extends StatelessWidget {
                       child: Text(
                         ' Go To Your Bookings',
                         style: TextStyle(
-                          color: Color.fromRGBO(238, 238, 238, 1),
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Color.fromRGBO(238, 238, 238, 1),
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Cantoraone'),
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
