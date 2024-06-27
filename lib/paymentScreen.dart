@@ -1,31 +1,37 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:parking/thankYouScreen.dart';
+import 'package:parking/widget/custom_credit_card.dart';
 
-class VisaPaymentPage extends StatefulWidget {
-  @override
-  _VisaPaymentPageState createState() => _VisaPaymentPageState();
-}
+// ignore: must_be_immutable
+class PaymentDetailsView extends StatelessWidget {
+  PaymentDetailsView({super.key});
 
-class _VisaPaymentPageState extends State<VisaPaymentPage> {
-  TextEditingController cardNumberController = TextEditingController();
-  TextEditingController expiryDateController = TextEditingController();
-  TextEditingController cvvController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final GlobalKey<FormState> formKey = GlobalKey();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: FadeInUp(child: Text('Payment')),
+        title: FadeInUp(
+            child: Text(
+          'Payment',
+          style: TextStyle(
+            color: Color.fromRGBO(88, 80, 141, 1),
+            fontFamily: 'Pacifico',
+            fontSize: 26,
+          ),
+        )),
         actions: <Widget>[
           FadeInUp(
             child: IconButton(
-              icon: Icon(Icons.payment_outlined),
+              icon: Icon(
+                Icons.payment_outlined,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
               onPressed: () {},
             ),
           ),
@@ -33,96 +39,59 @@ class _VisaPaymentPageState extends State<VisaPaymentPage> {
         backgroundColor: Color.fromRGBO(172, 162, 176, 0.1),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 50,
+      body: CustomScrollView(
+        slivers: [
+          // const SliverToBoxAdapter(
+          //   child: PaymentMethodsListView(),
+          // ),
+          SliverToBoxAdapter(
+            child: CustomCreditCard(
+              autovalidateMode: autovalidateMode,
+              formKey: formKey,
             ),
-            SizedBox(
-              width: 344,
-              height: 250,
-              child: AspectRatio(
-                aspectRatio: 487 / 451,
-                child: Container(
-                  // boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 10);],
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fitWidth,
-                      alignment: FractionalOffset.topCenter,
-                      image: AssetImage('images/new/images.jpg'),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            TextFormField(
-              controller: cardNumberController,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(color: Colors.grey, width: 0.7),
-                ),
-                labelText: 'Card Number',
-                labelStyle:
-                    TextStyle(fontSize: 16.0, color: Colors.grey.shade900),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: expiryDateController,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: BorderSide(color: Colors.grey, width: 0.7),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 50, 16, 50),
+                    //change
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ThankYouView()),
+                        );
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 60,
+                        decoration: ShapeDecoration(
+                          color: Color.fromRGBO(88, 80, 141, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Pay",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color.fromRGBO(238, 238, 238, 1),
+                              fontSize: 26,
+                              fontFamily: 'Inter',
+                              height: 0,
+                            ),
+                          ),
+                        ),
                       ),
-                      labelText: 'Expiry Date',
-                      labelStyle: TextStyle(
-                          fontSize: 16.0, color: Colors.grey.shade900),
-                    ),
-                    keyboardType: TextInputType.datetime,
-                  ),
-                ),
-                SizedBox(width: 16.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: cvvController,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: BorderSide(color: Colors.grey, width: 0.7),
-                      ),
-                      labelText: 'CVV',
-                      labelStyle: TextStyle(
-                          fontSize: 16.0, color: Colors.grey.shade900),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: () {
-                // Implement payment processing logic here
-                // You would typically integrate with a payment gateway
-                // and handle the response accordingly.
-                // For simplicity, let's just print the entered details.
-                print('Card Number: ${cardNumberController.text}');
-                print('Expiry Date: ${expiryDateController.text}');
-                print('CVV: ${cvvController.text}');
-              },
-              child: Text('Make Payment'),
-            ),
-          ],
-        ),
+                    ))),
+          ),
+        ],
       ),
     );
   }
 }
+
