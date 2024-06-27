@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:parking/bookings.dart';
-import 'package:parking/mycartScreen.dart';
+import 'package:parking/scanQR.dart';
 import 'package:parking/parkingScreen.dart';
 
 class HomePage extends StatefulWidget {
