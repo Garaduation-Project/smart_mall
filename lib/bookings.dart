@@ -1,32 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:parking/homePage.dart';
+import 'package:parking/parking_payment.dart';
 
 class BookingPage extends StatefulWidget {
   @override
   _BookingPageState createState() => _BookingPageState();
 }
 
-class _BookingPageState extends State<BookingPage> {
-  final TextEditingController _codeController = TextEditingController();
+class PriceInfoBox extends StatelessWidget {
+  final double hourPrice;
+  final double totalPrice;
 
-  void _submitCode() {
-    String enteredCode = _codeController.text;
-    // Display a SnackBar with a welcome message
-    final snackBar = SnackBar(
-      backgroundColor: Color.fromRGBO(88, 80, 141, 1),
-      content: Text(
-        'Welcome To Smart Mall! Code submitted: $enteredCode',
+  PriceInfoBox({required this.hourPrice, required this.totalPrice});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: Color.fromRGBO(242, 242, 242, 1),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildPriceRow(
+                  'Hour Price:', '\$${hourPrice.toStringAsFixed(2)}'),
+              SizedBox(height: 30),
+              _buildPriceRow('Total:', '\$${totalPrice.toStringAsFixed(2)}'),
+            ],
+          ),
+        ),
       ),
-      duration: Duration(seconds: 5),
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // Clear the text field
-    _codeController.clear();
   }
 
+  Widget _buildPriceRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          value,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
+class ParkingCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Color.fromRGBO(242, 242, 242, 1),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                'images/bookings.png', // Replace with your image path
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildInfoTile(Icons.access_time, '4 hours'),
+                _buildInfoTile(Icons.location_on, 'A-6'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoTile(IconData icon, String label) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.black),
+        SizedBox(
+          width: 8,
+        ),
+        Text(label, style: TextStyle(color: Colors.black)),
+      ],
+    );
+  }
+}
+
+class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,70 +120,72 @@ class _BookingPageState extends State<BookingPage> {
         actions: [
           IconButton(
             color: Color.fromRGBO(88, 80, 141, 1),
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(),
-                ),
-              );
-            },
+            icon: Icon(Icons.car_rental_sharp),
+            onPressed: () {},
           ),
         ],
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _codeController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(6),
-              ],
-              decoration: InputDecoration(
-                labelText: 'Enter 6-digit Code',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(color: Colors.grey, width: 0.7),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+              child: ParkingCard(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Center(
+                child: PriceInfoBox(
+                  hourPrice: 3,
+                  totalPrice: 12,
                 ),
               ),
-            ),
-            SizedBox(height: 50.0),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 40, 10, 40),
-              child: Center(
-                child: MaterialButton(
-                  onPressed: _submitCode,
-
+            ]),
+          ),
+          //SizedBox(height: 50.0),
+          // const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ParkPaymentDetailsView()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30, 40, 30, 50),
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                decoration: ShapeDecoration(
+                  // color:
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                child: Center(
                   child: Text(
-                    ' Submit',
+                    'Complete Payment',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color.fromRGBO(238, 238, 238, 1),
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontFamily: 'Cantoraone',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
                     ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(
-                        color: Color.fromRGBO(88, 80, 141, 1), width: 1.0),
-                  ),
-                  color: Color.fromRGBO(88, 80, 141, 1),
-                  textColor: Colors.black,
-                  padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
-
-                  //
-                  minWidth: 200,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
