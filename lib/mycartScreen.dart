@@ -1,34 +1,40 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'paymob_manager/paymobManager.dart';
 
 class MyCartBody extends StatelessWidget {
-  const MyCartBody({super.key});
+  final String? scannedPrice;
+  final String? discount;
+  final String? totalPrice;
+
+  const MyCartBody(
+      {Key? key, this.scannedPrice, this.discount, this.totalPrice})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double calculatedTotalPrice = calculateTotalPrice();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: FadeInUp(
-            child: Text(
+        title: Text(
           'My Cart',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-              color: Color.fromRGBO(88, 80, 141, 1),
-              fontFamily: 'Pacifico'),
-        )),
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+            color: Color.fromRGBO(88, 80, 141, 1),
+            fontFamily: 'Pacifico',
+          ),
+        ),
         actions: <Widget>[
-          FadeInUp(
-            child: IconButton(
-              icon: Icon(
-                Icons.payment_outlined,
-                color: Color.fromRGBO(96, 87, 156, 1),
-              ),
-              onPressed: () {},
+          IconButton(
+            icon: Icon(
+              Icons.payment_outlined,
+              color: Color.fromRGBO(96, 87, 156, 1),
             ),
+            onPressed: () {},
           ),
         ],
         backgroundColor: Colors.white,
@@ -38,13 +44,9 @@ class MyCartBody extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(30, 0, 30, 90),
         child: Column(
           children: [
-            const SizedBox(
-              height: 18,
-            ),
+            const SizedBox(height: 18),
             Expanded(child: Image.asset('images/new/cartgirl.png')),
-            const SizedBox(
-              height: 25,
-            ),
+            const SizedBox(height: 25),
             Row(
               children: [
                 Text(
@@ -60,7 +62,7 @@ class MyCartBody extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  r'42.97$',
+                  '${double.parse(scannedPrice ?? '0').toStringAsFixed(2)} EGP',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black45,
@@ -72,9 +74,7 @@ class MyCartBody extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 3,
-            ),
+            const SizedBox(height: 3),
             Row(
               children: [
                 Text(
@@ -90,7 +90,7 @@ class MyCartBody extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  r'0$',
+                  '${double.parse(discount ?? '0.0').toStringAsFixed(2)} EGP',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black45,
@@ -102,9 +102,7 @@ class MyCartBody extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 3,
-            ),
+            const SizedBox(height: 3),
             const Divider(
               thickness: 2,
               height: 34,
@@ -125,7 +123,7 @@ class MyCartBody extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  r'$50.97',
+                  '${calculatedTotalPrice.toStringAsFixed(2)} EGP',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black45,
@@ -146,7 +144,6 @@ class MyCartBody extends StatelessWidget {
                   width: double.infinity,
                   height: 60,
                   decoration: ShapeDecoration(
-                    // color:
                     color: Color.fromRGBO(88, 80, 141, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -168,21 +165,29 @@ class MyCartBody extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 12,
-            ),
+            const SizedBox(height: 12),
           ],
         ),
       ),
     );
   }
 
+  double calculateTotalPrice() {
+    double price = double.tryParse(scannedPrice ?? '0.0') ?? 0.0;
+    double discountValue = double.tryParse(discount ?? '0.0') ?? 0.0;
+    return price - discountValue;
+  }
+
   Future<void> _pay() async {
-    PaymobManager().getPaymentKey(10, "EGP").then((String paymentKey) {
-      launchUrl(
-        Uri.parse(
-            "https://accept.paymob.com/api/acceptance/iframes/840753?payment_token=$paymentKey"),
-      );
-    });
+    if (totalPrice != null) {
+      PaymobManager()
+          .getPaymentKey(int.parse(totalPrice!), "EGP")
+          .then((String paymentKey) {
+        launchUrl(
+          Uri.parse(
+              "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey"),
+        );
+      });
+    }
   }
 }
