@@ -1,14 +1,9 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:parking/mycartScreen.dart';
-// ignore: depend_on_referenced_packages
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQR extends StatefulWidget {
-  const ScanQR({super.key});
-
   @override
-  // ignore: library_private_types_in_public_api
   _ScanQRState createState() => _ScanQRState();
 }
 
@@ -63,16 +58,15 @@ class _ScanQRState extends State<ScanQR> {
       _controller = controller;
     });
     _controller!.scannedDataStream.listen((scanData) {
-      // عندما يتم مسح بيانات
       // ignore: unnecessary_null_comparison
       if (scanData != null) {
-        _controller!.pauseCamera();
+        _controller!.pauseCamera(); 
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => MyCartBody(
                     scannedPrice: scanData.code,
-                    discount: '0.0',
+                    discount: '0.0', // Replace with actual discount value
                     totalPrice: scanData.code,
                   )),
         );
@@ -86,4 +80,5 @@ class _ScanQRState extends State<ScanQR> {
     super.dispose();
   }
 }
+
 
