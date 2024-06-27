@@ -63,6 +63,7 @@ class _ScanQRState extends State<ScanQR> {
       _controller = controller;
     });
     _controller!.scannedDataStream.listen((scanData) {
+      // عندما يتم مسح بيانات
       // ignore: unnecessary_null_comparison
       if (scanData != null) {
         _controller!.pauseCamera();
@@ -85,3 +86,4 @@ class _ScanQRState extends State<ScanQR> {
     super.dispose();
   }
 }
+
