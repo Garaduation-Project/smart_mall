@@ -7,11 +7,8 @@ import 'firebase_options.dart';
 import 'logIN.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: HomePage0(),
