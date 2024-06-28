@@ -2,8 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+
 import 'logIN.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 
@@ -50,17 +49,13 @@ class HomePage0 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 18.0),
-                      child: FadeInUp(
-                        child: Text(
-                          'Hello dear',
-                          style: TextStyle(
-                              color: Color.fromRGBO(189, 185, 191, 1),
-                              fontSize: 20,
-                              fontFamily: 'Padauk'),
-                        ),
+                    FadeInUp(
+                      child: Text(
+                        'Hello dear',
+                        style: TextStyle(
+                            color: Color.fromRGBO(189, 185, 191, 1),
+                            fontSize: 20,
+                            fontFamily: 'Padauk'),
                       ),
                     ),
                     Padding(
@@ -120,3 +115,4 @@ class HomePage0 extends StatelessWidget {
     );
   }
 }
+
