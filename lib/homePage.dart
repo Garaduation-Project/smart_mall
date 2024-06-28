@@ -2,7 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:parking/parkingScreen.dart';
+import 'package:parking/bookings.dart';
 import 'package:parking/scanQr.dart';
 
 class HomePage extends StatefulWidget {
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ReservationScreen(),
+                                                          BookingPage(),
                                                     ),
                                                   );
                                                 },
