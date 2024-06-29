@@ -1,17 +1,19 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:http/http.dart' as http;
+import 'package:parking/logIN.dart';
+import 'dart:convert';
+import 'package:parking/models/signup_api_model.dart';
 
-import 'logIN.dart';
-
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool passToggle = true;
 
   TextEditingController emailController = TextEditingController();
@@ -22,15 +24,13 @@ class _SignInState extends State<SignIn> {
 
   TextEditingController passwordController = TextEditingController();
   bool showPasswordError = false;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        // resizeToAvoidBottomInset: false,
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        body: SafeArea(
-            child: Center(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
           child: SingleChildScrollView(
             child: Form(
               child: Column(
@@ -51,9 +51,10 @@ class _SignInState extends State<SignIn> {
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            fontFamily: 'Pacifico',
-                            fontSize: 40,
-                            color: Color.fromRGBO(88, 80, 141, 1)),
+                          fontFamily: 'Pacifico',
+                          fontSize: 40,
+                          color: Color.fromRGBO(88, 80, 141, 1),
+                        ),
                       ),
                     ),
                   ),
@@ -74,7 +75,6 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.only(top: 0.0),
                       child: Container(
                         width: 300,
-                        // height: 50,
                         child: Column(
                           children: [
                             Padding(
@@ -84,13 +84,14 @@ class _SignInState extends State<SignIn> {
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.black),
                               decoration: InputDecoration(
-                                // border: InputBorder.none,
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
@@ -98,11 +99,14 @@ class _SignInState extends State<SignIn> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
-                                prefixIcon: Icon(Icons.account_circle,
-                                    color: Color.fromRGBO(88, 80, 141, 1)),
-
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
+                                  color: Color.fromRGBO(88, 80, 141, 1),
+                                ),
                                 hintText: "Email",
                                 labelText: 'Email',
                                 errorText: showEmailError
@@ -127,7 +131,6 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
                         width: 300,
-                        // height: 50,
                         child: Column(
                           children: [
                             Padding(
@@ -135,14 +138,15 @@ class _SignInState extends State<SignIn> {
                             ),
                             TextFormField(
                               controller: plateController,
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.white70),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
                               decoration: InputDecoration(
-                                // border: InputBorder.none,
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
@@ -150,10 +154,14 @@ class _SignInState extends State<SignIn> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
-                                prefixIcon: Icon(Icons.car_rental,
-                                    color: Color.fromRGBO(88, 80, 141, 1)),
+                                prefixIcon: Icon(
+                                  Icons.car_rental,
+                                  color: Color.fromRGBO(88, 80, 141, 1),
+                                ),
                                 hintText: "Plate Number",
                                 labelText: 'Number Plate',
                                 errorText: showPlateError
@@ -178,7 +186,6 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
                         width: 300,
-                        // height: 50,
                         child: Column(
                           children: [
                             Padding(
@@ -190,14 +197,15 @@ class _SignInState extends State<SignIn> {
                               enableSuggestions: false,
                               autocorrect: false,
                               keyboardType: TextInputType.visiblePassword,
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.white70),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
                               decoration: InputDecoration(
-                                // border: InputBorder.none,
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
@@ -205,19 +213,19 @@ class _SignInState extends State<SignIn> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
-                                      color: Colors.grey, width: 0.7),
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
                                 ),
-                                prefixIcon: Icon(Icons.key,
-                                    color: Color.fromRGBO(88, 80, 141, 1)),
+                                prefixIcon: Icon(
+                                  Icons.key,
+                                  color: Color.fromRGBO(88, 80, 141, 1),
+                                ),
                                 suffixIcon: InkWell(
                                   onTap: () {
-                                    if (passToggle == true) {
-                                      passToggle = false;
-                                    } else {
-                                      passToggle = true;
-                                    }
-
-                                    setState(() {});
+                                    setState(() {
+                                      passToggle = !passToggle;
+                                    });
                                   },
                                   child: passToggle
                                       ? const Icon(
@@ -231,7 +239,6 @@ class _SignInState extends State<SignIn> {
                                 errorText: showPasswordError
                                     ? 'Please enter Password'
                                     : null,
-
                                 labelStyle: TextStyle(
                                     fontSize: 16.0, color: Colors.grey),
                               ),
@@ -256,8 +263,18 @@ class _SignInState extends State<SignIn> {
                             showPlateError = plateController.text.isEmpty;
                             showPasswordError = passwordController.text.isEmpty;
                           });
-                        },
 
+                          if (!showEmailError &&
+                              !showPlateError &&
+                              !showPasswordError) {
+                            SignUpApiModel.signUp(
+                              emailController.text,
+                              plateController.text,
+                              passwordController.text,
+                              context,
+                            );
+                          }
+                        },
                         child: Text(
                           ' SIGN UP ',
                           style: TextStyle(
@@ -269,39 +286,41 @@ class _SignInState extends State<SignIn> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           side: BorderSide(
-                              color: Color.fromRGBO(88, 80, 141, 1),
-                              width: 1.0),
+                            color: Color.fromRGBO(88, 80, 141, 1),
+                            width: 1.0,
+                          ),
                         ),
                         color: Color.fromRGBO(88, 80, 141, 1),
                         textColor: Colors.black,
                         padding: EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 40.0),
-                        // minWidth: double.infinity,
+                          vertical: 16.0,
+                          horizontal: 40.0,
+                        ),
                       ),
                     ),
                   ),
                   FadeInUp(
                     child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NameScreen(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Already have an account?Log in',
-                          style: TextStyle(color: Colors.blueGrey),
-                        )),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NameScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Already have an account? Log in',
+                        style: TextStyle(color: Colors.blueGrey),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-        )),
+        ),
       ),
     );
-    // );
   }
 }
