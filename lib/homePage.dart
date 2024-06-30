@@ -1,208 +1,196 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/bookings.dart';
-import 'package:parking/logIN.dart';
-import 'package:parking/models/logout_api_model.dart';
-import 'package:parking/mycartScreen.dart';
-import 'package:parking/parkingScreen.dart'; // Import the user service
+import 'package:parking/parkingScreen.dart';
+import 'package:parking/scanQR.dart';
 
 class HomePage extends StatefulWidget {
+  final String? userEmail;
+
+  HomePage({Key? key, this.userEmail}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late String carNumber = "";
-  late String userID = "";
-  late String username = "";
-  late bool isPresent = false;
+  String carNumber = "";
+  bool isPresent = false;
 
   @override
   void initState() {
     super.initState();
-    fetchUserDetails();
-  }
-
-  Future<void> fetchUserDetails() async {
-    final userDetails = await LogOutApiModel.getUserDetails();
-    if (userDetails != null) {
-      setState(() {
-        carNumber = userDetails['number_plate'];
-        userID = userDetails['userID'];
-        username = userDetails['username'];
-      });
-    } else {
-      print('Failed to load user details');
-    }
-  }
-
-  Future<void> logOut() async {
-    final result = await LogOutApiModel.logOut();
-    if (result) {
-      setState(() {
-        carNumber = "";
-        userID = "";
-        username = "";
-        isPresent = false;
-      });
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-            builder: (context) =>
-                NameScreen()), // Replace with your login screen
-      );
-    } else {
-      print('Failed to log out');
-    }
+    carNumber =
+        widget.userEmail ?? ""; // Initialize with userEmail if available
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(
-              'HOME',
-              style: TextStyle(
-                  fontSize: 26,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          'HOME',
+          style: TextStyle(
+            fontSize: 26,
+            color: Color.fromRGBO(88, 80, 141, 1),
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Pacifico',
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.directions_car_filled,
+              color: Color.fromRGBO(88, 80, 141, 1),
+            ),
+            onPressed: () {},
+          ),
+        ],
+        backgroundColor: Color.fromRGBO(172, 162, 176, 0.1),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(88, 80, 141, 0.3),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('images/profile.jpg'),
+              ),
+              accountName: Text(
+                'Hello! ' + carNumber,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              accountEmail: null,
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.edit,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'Bookings',
+                style: TextStyle(
+                    color: Color.fromRGBO(88, 80, 141, 1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BookingPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.history,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'History',
+                style: TextStyle(
+                    color: Color.fromRGBO(88, 80, 141, 1),
+                    // fontFamily: 'Source Sans Pro',
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'Log Out',
+                style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Pacifico'),
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.directions_car_filled,
-                  color: Color.fromRGBO(88, 80, 141, 1),
+                  fontSize: 22,
                 ),
-                onPressed: () {},
               ),
-            ],
-            backgroundColor: Color.fromRGBO(172, 162, 176, 0.3),
-          ),
-          drawer: Drawer(
-            width: 250,
-            backgroundColor: Color.fromRGBO(156, 151, 158, 0.898),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: Colors.white24),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage('images/login.png'),
-                  ),
-                  accountName: Text(
-                    username,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  accountEmail: Text(
-                    carNumber,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BookingPage()),
-                    );
-                  },
-                  leading: Icon(
-                    Icons.edit,
-                    color: Color.fromRGBO(88, 80, 141, 1),
-                  ),
-                  title: Text(
-                    'Bookings',
-                    style: TextStyle(color: Colors.white70, fontSize: 20),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.history,
-                    color: Color.fromRGBO(88, 80, 141, 1),
-                  ),
-                  title: Text(
-                    'History',
-                    style: TextStyle(color: Colors.white70, fontSize: 20),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Color.fromRGBO(88, 80, 141, 1),
-                  ),
-                  onTap: logOut,
-                  title: Text(
-                    'Log out',
-                    style: TextStyle(color: Colors.white70, fontSize: 20),
-                  ),
-                ),
-              ],
+              onTap: () {
+                // Logout logic here
+                Navigator.pop(context); // Close drawer
+                Navigator.pop(context); // Navigate back to login screen
+              },
             ),
-          ),
-          backgroundColor: Colors.white,
-          body: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(47.0),
-                                child: SizedBox(
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            FadeInUp(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Add some content to the Expanded widget
+                    SizedBox(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: SizedBox(
+                                  // width: 420,
+                                  // height: 300,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 340,
-                                        height: 200,
-                                        child: AspectRatio(
-                                          aspectRatio: 487 / 451,
-                                          child: CircleAvatar(
-                                            radius: 170,
-                                            backgroundColor:
-                                                Color.fromRGBO(88, 80, 141, 1),
-                                            child: CircleAvatar(
-                                              radius: 97,
-                                              backgroundImage:
-                                                  AssetImage('images/lot1.png'),
-                                              backgroundColor: Color.fromRGBO(
-                                                  88, 80, 141, 1),
-                                            ),
-                                          ),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 340,
+                                    height: 200,
+                                    child: AspectRatio(
+                                      aspectRatio: 487 / 451,
+                                      child: CircleAvatar(
+                                        radius: 170,
+                                        backgroundColor:
+                                            Color.fromRGBO(88, 80, 141, 1),
+                                        child: CircleAvatar(
+                                          radius: 97,
+                                          backgroundImage:
+                                              AssetImage(('images/lot1.png')),
+                                          backgroundColor:
+                                              Color.fromRGBO(88, 80, 141, 1),
                                         ),
                                       ),
-                                      Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              40.0, 25.0, 40.0, 0.0),
-                                          child: MaterialButton(
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          40.0, 25.0, 40.0, 0.0),
+                                      child: FadeInUp(
+                                        child: MaterialButton(
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ReservationScreen(),
+                                                      ReservationPage(),
                                                 ),
                                               );
                                             },
                                             child: Text(
                                               ' Reserve Parking',
                                               style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 22.0,
-                                                fontFamily: 'Cantoraone',
+                                                color: Color.fromRGBO(
+                                                    238, 238, 238, 1),
+                                                fontSize: 20.0,
+                                                fontFamily: 'Padauk',
+                                                //fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             shape: RoundedRectangleBorder(
@@ -217,60 +205,65 @@ class _HomePageState extends State<HomePage> {
                                                 Color.fromRGBO(88, 80, 141, 1),
                                             textColor: Colors.black,
                                             padding: EdgeInsets.fromLTRB(
-                                                10, 15, 10, 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: SizedBox(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 340,
-                                        height: 200,
-                                        child: AspectRatio(
-                                          aspectRatio: 487 / 451,
-                                          child: CircleAvatar(
-                                            radius: 170,
-                                            backgroundColor:
-                                                Color.fromRGBO(88, 80, 141, 1),
-                                            child: CircleAvatar(
-                                              radius: 97,
-                                              backgroundImage: AssetImage(
-                                                  'images/new/payment.jpeg'),
-                                              backgroundColor: Color.fromRGBO(
-                                                  88, 80, 141, 1),
+                                                10, 15, 10, 15)
+                                            // minWidth: double.infinity,
                                             ),
-                                          ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: SizedBox(
+                                  // width: 420,
+                                  // height: 300,
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 340,
+                                    height: 200,
+                                    child: AspectRatio(
+                                      aspectRatio: 487 / 451,
+                                      child: CircleAvatar(
+                                        radius: 170,
+                                        backgroundColor:
+                                            Color.fromRGBO(88, 80, 141, 1),
+                                        child: CircleAvatar(
+                                          radius: 97,
+                                          backgroundImage: AssetImage(
+                                              ('images/new/payment.jpeg')),
+                                          backgroundColor:
+                                              Color.fromRGBO(88, 80, 141, 1),
                                         ),
                                       ),
-                                      Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              40.0, 25.0, 40.0, 20.0),
-                                          child: MaterialButton(
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          40.0, 25.0, 40.0, 20.0),
+                                      child: FadeInUp(
+                                        child: MaterialButton(
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MyCartBody(),
+                                                      ScanQR(),
                                                 ),
                                               );
                                             },
                                             child: Text(
                                               ' Pay with Visa',
                                               style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 22.0,
-                                                fontFamily: 'Cantoraone',
+                                                color: Color.fromRGBO(
+                                                    238, 238, 238, 1),
+                                                fontSize: 20.0,
+                                                fontFamily: 'Padauk',
+                                                //fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             shape: RoundedRectangleBorder(
@@ -285,24 +278,24 @@ class _HomePageState extends State<HomePage> {
                                                 Color.fromRGBO(88, 80, 141, 1),
                                             textColor: Colors.black,
                                             padding: EdgeInsets.fromLTRB(
-                                                20, 15, 20, 15),
-                                          ),
-                                        ),
+                                                20, 15, 20, 15)
+                                            // minWidth: double.infinity,
+                                            ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                ],
+                              )),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
