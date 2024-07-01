@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/bookings.dart';
+import 'package:parking/logIN.dart';
+import 'package:parking/models/logout_api_model.dart';
 import 'package:parking/parkingScreen.dart';
 import 'package:parking/scanQR.dart';
 
@@ -22,6 +24,32 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     carNumber =
         widget.userEmail ?? ""; // Initialize with userEmail if available
+  }
+
+  Future<void> fetchUserDetails() async {
+    final userDetails = await LogOutApiModel.getUserDetails();
+    if (userDetails != null) {
+      setState(() {
+        carNumber = userDetails['number_plate'];
+      });
+    } else {
+      print('Failed to load user details');
+    }
+  }
+
+  Future<void> logOut() async {
+    final result = await LogOutApiModel.logOut();
+    if (result) {
+      setState(() {
+        carNumber = "";
+        isPresent = false;
+      });
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => NameScreen()),
+      );
+    } else {
+      print('Failed to log out');
+    }
   }
 
   @override
@@ -109,6 +137,7 @@ class _HomePageState extends State<HomePage> {
                 Icons.logout,
                 color: Color.fromRGBO(88, 80, 141, 1),
               ),
+              onTap: logOut,
               title: Text(
                 'Log Out',
                 style: TextStyle(
@@ -117,11 +146,6 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 22,
                 ),
               ),
-              onTap: () {
-                // Logout logic here
-                Navigator.pop(context); // Close drawer
-                Navigator.pop(context); // Navigate back to login screen
-              },
             ),
           ],
         ),
