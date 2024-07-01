@@ -60,18 +60,41 @@ class _ScanQRState extends State<ScanQR> {
     _controller!.scannedDataStream.listen((scanData) {
       // ignore: unnecessary_null_comparison
       if (scanData != null) {
-        _controller!.pauseCamera(); 
+        _controller!.pauseCamera();
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => MyCartBody(
-                    scannedPrice: scanData.code,
-                    discount: '0.0', // Replace with actual discount value
-                    totalPrice: scanData.code,
+                    products: _parseScanData(scanData.code),
                   )),
         );
       }
     });
+  }
+
+  List<Map<String, dynamic>> _parseScanData(String? data) {
+    if (data == null) return [];
+
+    List<Map<String, dynamic>> products = [];
+    List<String> lines = data.split('\n');
+
+    for (int i = 0; i < lines.length; i += 2) {
+      if (i + 1 < lines.length) {
+        String name = lines[i].replaceFirst('product: ', '').trim();
+        double price =
+            double.tryParse(lines[i + 1].replaceFirst('Price: ', '').trim()) ??
+                0.0;
+
+        int index = products.indexWhere((product) => product['name'] == name);
+        if (index != -1) {
+          products[index]['count'] += 1;
+        } else {
+          products.add({'name': name, 'price': price, 'count': 1});
+        }
+      }
+    }
+
+    return products;
   }
 
   @override
@@ -80,5 +103,6 @@ class _ScanQRState extends State<ScanQR> {
     super.dispose();
   }
 }
+
 
 
