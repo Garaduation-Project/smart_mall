@@ -129,7 +129,6 @@ class ReservationPage extends StatelessWidget {
                     width: 70,
                     height: 60,
                     decoration: ShapeDecoration(
-                      // color:
                       color: Color.fromRGBO(88, 80, 141, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
