@@ -16,13 +16,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String carNumber = "";
+  String email = "";
   bool isPresent = false;
 
   @override
   void initState() {
     super.initState();
-    carNumber =
+    email =
         widget.userEmail ?? ""; // Initialize with userEmail if available
   }
 
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     final userDetails = await LogOutApiModel.getUserDetails();
     if (userDetails != null) {
       setState(() {
-        carNumber = userDetails['number_plate'];
+        email = userDetails['number_plate'];
       });
     } else {
       print('Failed to load user details');
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     final result = await LogOutApiModel.logOut();
     if (result) {
       setState(() {
-        carNumber = "";
+        email = "";
         isPresent = false;
       });
       Navigator.of(context).pushReplacement(
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {},
           ),
         ],
-        backgroundColor: Color.fromRGBO(172, 162, 176, 0.1),
+        backgroundColor: Color.fromRGBO(172, 162, 176, 0.3),
       ),
       drawer: Drawer(
         child: ListView(
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundImage: AssetImage('images/profile.jpg'),
               ),
               accountName: Text(
-                'Hello! ' + carNumber,
+                'Hello! ' + email,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -116,21 +116,6 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => BookingPage()),
                 );
               },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.history,
-                color: Color.fromRGBO(88, 80, 141, 1),
-              ),
-              title: Text(
-                'History',
-                style: TextStyle(
-                    color: Color.fromRGBO(88, 80, 141, 1),
-                    // fontFamily: 'Source Sans Pro',
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
-              ),
-              onTap: () {},
             ),
             ListTile(
               leading: Icon(
