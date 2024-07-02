@@ -1,48 +1,13 @@
-// ignore_for_file: dead_code
-
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:parking/bookings.dart';
-// ignore: unused_import
 import 'package:parking/homePage.dart';
 
-void main() {
-  runApp(SuccessPage());
-}
-
-class Successful extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Reservation Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: SuccessPage(),
-    );
-  }
-}
-
 class SuccessPage extends StatelessWidget {
-  const SuccessPage({super.key});
-  Widget buildRectangleRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(4, (index) => _buildRectangle())
-          .expand((widget) => [widget, SizedBox(width: 8)])
-          .toList()
-        ..removeLast(),
-    );
-  }
+  final String reservationCode;
+  final TextEditingController codeController;
 
-  Widget _buildRectangle() {
-    return Container(
-      width: 71,
-      height: 79,
-      color: Color.fromRGBO(217, 217, 217, 0.9),
-    );
-  }
+  SuccessPage({required this.reservationCode})
+      : codeController = TextEditingController(text: reservationCode);
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +80,7 @@ class SuccessPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 40),
                     child: Text(
-                      'Use This code To Entre And Exit The Parking.',
+                      'Use This code To Enter And Exit The Parking.',
                       style: TextStyle(
                           fontSize: 20,
                           color: Color.fromRGBO(171, 167, 174, 1),
@@ -124,15 +89,29 @@ class SuccessPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 40.0, bottom: 10),
-                  child: Row(
-                    children: [
-                      Row(
-                        children: [
-                          buildRectangleRow(),
-                        ],
+                  padding:
+                      const EdgeInsets.only(right: 10.0, bottom: 10, left: 2),
+                  child: Container(
+                    width: 300,
+                    height: 80,
+                    color: Color.fromRGBO(172, 162, 176, 0.3),
+                    child: Center(
+                      child: TextField(
+                        controller: codeController,
+                        style: TextStyle(
+                          fontSize: 38,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(88, 80, 141, 1),
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        readOnly:
+                            true, // Make it read-only since it's a code from backend
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -161,7 +140,7 @@ class SuccessPage extends StatelessWidget {
                         );
                       },
                       child: Text(
-                        ' Go To Your Bookings',
+                        'Go To Your Bookings',
                         style: TextStyle(
                             color: Color.fromRGBO(238, 238, 238, 1),
                             fontSize: 20.0,
@@ -176,8 +155,6 @@ class SuccessPage extends StatelessWidget {
                       color: Color.fromRGBO(88, 80, 141, 1),
                       textColor: Colors.black,
                       padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
-
-                      //
                       minWidth: 300,
                     ),
                   ),
