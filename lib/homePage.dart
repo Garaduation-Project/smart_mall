@@ -196,8 +196,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                 color: Color.fromRGBO(
                                                     238, 238, 238, 1),
-                                                fontSize: 20.0,
-                                                fontFamily: 'Padauk',
+                                                fontSize: 24.0,
+                                                fontFamily: 'Cantoraone',
                                                 //fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -269,8 +269,8 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                 color: Color.fromRGBO(
                                                     238, 238, 238, 1),
-                                                fontSize: 20.0,
-                                                fontFamily: 'Padauk',
+                                                fontSize: 24.0,
+                                                fontFamily: 'Cantoraone',
                                                 //fontWeight: FontWeight.bold,
                                               ),
                                             ),
