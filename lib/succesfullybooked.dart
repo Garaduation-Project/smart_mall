@@ -65,13 +65,15 @@ class SuccessPage extends StatelessWidget {
                 SizedBox(
                   height: 80,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 200, 0),
-                    child: Text(
-                      'Parking Code',
-                      style: TextStyle(
-                          fontSize: 32,
-                          color: Color.fromRGBO(88, 80, 141, 1),
-                          fontFamily: 'CantoraOne'),
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                    child: Center(
+                      child: Text(
+                        'Parking Code',
+                        style: TextStyle(
+                            fontSize: 32,
+                            color: Color.fromRGBO(88, 80, 141, 1),
+                            fontFamily: 'CantoraOne'),
+                      ),
                     ),
                   ),
                 ),
