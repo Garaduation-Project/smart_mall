@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:parking/homePage.dart'; // Assuming this is where HomePage is imported from
+import 'package:parking/homePage.dart'; 
 import 'package:parking/models/login_api_model.dart';
 import 'package:parking/pass_reset/email_entre.dart';
-import 'package:parking/signUP.dart'; // Your login API model
+import 'package:parking/signUP.dart'; 
 
 class NameScreen extends StatefulWidget {
   const NameScreen({Key? key}) : super(key: key);
