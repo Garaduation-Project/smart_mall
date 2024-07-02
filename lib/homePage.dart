@@ -22,15 +22,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    email =
-        widget.userEmail ?? ""; // Initialize with userEmail if available
+    email = widget.userEmail ?? ""; // Initialize with userEmail if available
   }
 
   Future<void> fetchUserDetails() async {
     final userDetails = await LogOutApiModel.getUserDetails();
     if (userDetails != null) {
       setState(() {
-        email = userDetails['number_plate'];
+        email = userDetails['email'];
       });
     } else {
       print('Failed to load user details');
