@@ -103,6 +103,3 @@ class _ScanQRState extends State<ScanQR> {
     super.dispose();
   }
 }
-
-
-
