@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:parking/homePage.dart'; 
+import 'package:parking/homePage.dart';
+import 'package:parking/models/freeslots_api_model.dart';
 import 'package:parking/models/reserve_api_model.dart';
 import 'package:parking/succesfullybooked.dart';
 
-class ReservationPage extends StatelessWidget {
+class ReservationPage extends StatefulWidget {
   @override
+  _ReservationPageState createState() => _ReservationPageState();
+}
+
+class _ReservationPageState extends State<ReservationPage> {
+  final FreeSlotApiModel _apiModel = FreeSlotApiModel();
+  late Future<int> _freeSlots;
+
+  @override
+  void initState() {
+    super.initState();
+    _freeSlots = _apiModel.fetchFreeSlots();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -107,25 +121,54 @@ class ReservationPage extends StatelessWidget {
               ),
             ),
             Center(
-              child: Text(
-                'Free slots :',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontFamily: 'Cantoraone',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: FutureBuilder<int>(
+                  future: _freeSlots,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'Cantoraone',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        'Free Slots : ${snapshot.data}',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'Cantoraone',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        'Free Slots : 0',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'Cantoraone',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+                  }),
             ),
             SizedBox(height: 15),
             GestureDetector(
               onTap: () async {
                 // Call the API model method to reserve a slot
-                Map<String, dynamic> result = await ReservationApiModel.reserveSlot();
+                Map<String, dynamic> result =
+                    await ReservationApiModel.reserveSlot();
                 if (result['success']) {
                   // Navigate to SuccessPage with the reservation code
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SuccessPage(reservationCode: result['code'])),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SuccessPage(reservationCode: result['code'])),
                   );
                 } else {
                   // Handle reservation failure if needed
