@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:parking/thankYouView.dart';
 
 class ThankYouView extends StatelessWidget {
-  const ThankYouView({super.key});
+  final double price;
+
+  const ThankYouView({super.key, required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class ThankYouView extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              ThankYouCard(),
+              ThankYouCard(price: price),
               Positioned(
                 bottom: MediaQuery.sizeOf(context).height * .2 + 20,
                 left: 20 + 8,
