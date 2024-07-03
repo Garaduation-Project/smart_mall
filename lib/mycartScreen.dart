@@ -1,8 +1,9 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:parking/paymentScreen.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'paymob_manager/paymobManager.dart';
 
@@ -205,7 +206,7 @@ class MyCartBody extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       GestureDetector(
-                        onTap: () async => _pay(context),
+                        onTap: () async => _pay(context, calculatedTotalPrice),
                         child: Padding(
                           padding:
                               const EdgeInsets.only(top: 30.0, bottom: 1.0),
@@ -254,18 +255,23 @@ class MyCartBody extends StatelessWidget {
     return totalPrice;
   }
 
-  Future<void> _pay(BuildContext context) async {
+  Future<void> _pay(BuildContext context, double totalPrice) async {
     if (products != null && products!.isNotEmpty) {
       _showLoadingDialog(context); // Show loading dialog
 
-      double totalPrice = calculateTotalPrice();
       PaymobManager()
           .getPaymentKey(totalPrice.round(), "EGP")
           .then((String paymentKey) {
         Navigator.pop(context); // Hide loading dialog
-        launchUrl(
-          Uri.parse(
-              "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey"),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebView(
+              paymentUrl:
+                  "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey",
+              price: totalPrice, // Pass totalPrice to PaymentWebView
+            ),
+          ),
         );
       }).catchError((error) {
         Navigator.pop(context); // Hide loading dialog
@@ -314,5 +320,3 @@ class MyCartBody extends StatelessWidget {
     );
   }
 }
-
-
