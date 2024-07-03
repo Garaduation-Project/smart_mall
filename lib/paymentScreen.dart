@@ -1,97 +1,93 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/thankYouScreen.dart';
-import 'package:parking/widget/custom_credit_card.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-// ignore: must_be_immutable
-class PaymentDetailsView extends StatelessWidget {
-  PaymentDetailsView({super.key});
+import 'failed_paying.dart';
 
-  final GlobalKey<FormState> formKey = GlobalKey();
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+class PaymentWebView extends StatefulWidget {
+  final String paymentUrl;
+  final double price;
+
+  PaymentWebView({required this.paymentUrl, required this.price});
+
+  @override
+  _PaymentWebViewState createState() => _PaymentWebViewState();
+}
+
+class _PaymentWebViewState extends State<PaymentWebView> {
+  // ignore: unused_field
+  late WebViewController _webViewController;
+  bool isLoading = true; // Track if a navigation action is in progress
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: FadeInUp(
-            child: Text(
+        title: Text(
           'Payment',
           style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
             color: Color.fromRGBO(88, 80, 141, 1),
             fontFamily: 'Pacifico',
-            fontSize: 26,
           ),
-        )),
+        ),
         actions: <Widget>[
-          FadeInUp(
-            child: IconButton(
-              icon: Icon(
-                Icons.payment_outlined,
-                color: Color.fromRGBO(88, 80, 141, 1),
-              ),
-              onPressed: () {},
+          IconButton(
+            icon: Icon(
+              Icons.payment,
+              color: Color.fromRGBO(96, 87, 156, 1),
             ),
+            onPressed: () {},
           ),
         ],
-        backgroundColor: Color.fromRGBO(172, 162, 176, 0.1),
+        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          // const SliverToBoxAdapter(
-          //   child: PaymentMethodsListView(),
-          // ),
-          SliverToBoxAdapter(
-            child: CustomCreditCard(
-              autovalidateMode: autovalidateMode,
-              formKey: formKey,
+      body: Stack(
+        children: [
+          WebView(
+            initialUrl: widget.paymentUrl,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _webViewController = webViewController;
+            },
+            onPageStarted: (url) {
+              setState(() {
+                isLoading = true;
+              });
+            },
+            onPageFinished: (url) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.contains('success') && !isLoading) {
+                // Navigate to ThankYouView if 'success' detected
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ThankYouView(price: widget.price),
+                  ),
+                );
+                return NavigationDecision.prevent;
+              } else if (request.url.contains('failure') && !isLoading) {
+                // Navigate to FailureScreen if 'failure' detected
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => FailureScreen()),
+                );
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+          if (isLoading)
+            Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 50, 16, 50),
-                    //change
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ThankYouView()),
-                        );
-                      },
-                      child: Container(
-                        width: 300,
-                        height: 60,
-                        decoration: ShapeDecoration(
-                          color: Color.fromRGBO(88, 80, 141, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Pay",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color.fromRGBO(238, 238, 238, 1),
-                              fontSize: 26,
-                              fontFamily: 'Inter',
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ))),
-          ),
         ],
       ),
     );
   }
 }
-
