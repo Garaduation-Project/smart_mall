@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class ThankYouCard extends StatelessWidget {
+  final double price;
+
   const ThankYouCard({
     super.key,
+    required this.price,
   });
 
   @override
   Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('MM/dd/yyyy').format(now);
+    final String formattedTime = DateFormat('hh:mm a').format(now);
+
     return Padding(
       padding: const EdgeInsets.only(top: 70),
       child: Container(
@@ -23,9 +31,9 @@ class ThankYouCard extends StatelessWidget {
           padding: const EdgeInsets.only(top: 30 + 16, left: 22, right: 22),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 20),
+                child: Text(
                   'Thank you!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -37,7 +45,7 @@ class ThankYouCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 'Your transaction was successful',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -53,7 +61,7 @@ class ThankYouCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Date',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -66,8 +74,8 @@ class ThankYouCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '01/24/2023',
-                    style: TextStyle(
+                    formattedDate,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontFamily: 'Inter',
@@ -82,7 +90,7 @@ class ThankYouCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Time',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -95,8 +103,8 @@ class ThankYouCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '10:15 AM',
-                    style: TextStyle(
+                    formattedTime,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontFamily: 'Inter',
@@ -109,34 +117,8 @@ class ThankYouCard extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              const Row(
-                children: [
-                  Text(
-                    'To',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(88, 80, 141, 1),
-                      fontSize: 18,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    'Sam Louis',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      height: 0,
-                    ),
-                  ),
-                ],
-              ),
               const Divider(
-                height: 60,
+                height: 40,
                 thickness: 2,
               ),
               Row(
@@ -154,9 +136,9 @@ class ThankYouCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    r'$50.97',
+                    '${price.toStringAsFixed(2)} EGP',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 24,
                       fontFamily: 'Inter',
@@ -172,8 +154,8 @@ class ThankYouCard extends StatelessWidget {
               Container(
                 width: 305,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
-                decoration: ShapeDecoration(
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
+                decoration: const ShapeDecoration(
                   color: Color.fromRGBO(161, 134, 177, 0.4),
                   shape: RoundedRectangleBorder(),
                 ),
@@ -184,8 +166,10 @@ class ThankYouCard extends StatelessWidget {
                       width: 23,
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // تعديل لجعل النصوص تبدأ من اليسار
                       children: [
-                        Text(
+                        const Text(
                           'Credit Card',
                           style: TextStyle(
                             color: Colors.black,
@@ -196,9 +180,9 @@ class ThankYouCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Mastercard **78',
+                          'Mastercard **46',
                           style: TextStyle(
-                            color: Colors.black.withOpacity(0.699999988079071),
+                            color: Colors.black.withOpacity(0.7),
                             fontSize: 16,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w400,
@@ -234,7 +218,7 @@ class ThankYouCard extends StatelessWidget {
                       child: Text(
                         'PAID',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
