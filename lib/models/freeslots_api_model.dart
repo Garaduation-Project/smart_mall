@@ -1,21 +1,17 @@
-// parking_api.dart
-
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class FreeSlotsApiModel {
-  Future<Map<String, dynamic>> fetchFreeSlots() async {
-    try {
-      final response = await http
-          .get(Uri.parse('https://cse-parking.up.railway.app/api/freeslots/'));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return {'freeslots': data['freeslots']};
-      } else {
-        throw Exception('Failed to load free slots');
-      }
-    } catch (e) {
-      throw Exception('Error fetching free slots: $e');
+class FreeSlotApiModel {
+  static const String baseUrl = 'https://cse-parking.up.railway.app/api/';
+
+  Future<int> fetchFreeSlots() async {
+    final response = await http.get(Uri.parse('${baseUrl}freeslots/'));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse['free_slots'];
+    } else {
+      throw Exception('Failed to load free slots');
     }
   }
 }
