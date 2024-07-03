@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:parking/parking_payment.dart';
+import 'package:parking/paymentScreen.dart';
+
 
 class BookingPage extends StatefulWidget {
   @override
@@ -150,13 +152,8 @@ class _BookingPageState extends State<BookingPage> {
           //SizedBox(height: 50.0),
           // const SizedBox(height: 16),
           GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ParkPaymentDetailsView()),
-              );
-            },
+            onTap: () async => _pay(),
+
             child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 40, 30, 50),
               child: Container(
@@ -188,5 +185,22 @@ class _BookingPageState extends State<BookingPage> {
         ],
       ),
     );
+  }
+  Future<void> _pay() async {
+    PaymobManager()
+        .getPaymentKey(totalPrice.toInt(), "EGP")
+        .then((String paymentKey) {
+      Navigator.pop(context); // Hide loading dialog
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentWebView(
+            paymentUrl:
+                "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey",
+            price: totalPrice, // Pass totalPrice to PaymentWebView
+          ),
+        ),
+      );
+    });
   }
 }
