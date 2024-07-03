@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:parking/homePage.dart'; 
+import 'package:parking/homePage.dart';
 import 'package:parking/models/login_api_model.dart';
 import 'package:parking/pass_reset/email_entre.dart';
-import 'package:parking/signUP.dart'; 
+import 'package:parking/signUP.dart';
 
 class NameScreen extends StatefulWidget {
   const NameScreen({Key? key}) : super(key: key);
@@ -32,9 +32,9 @@ class _NameScreenState extends State<NameScreen> {
       return;
     }
 
-    bool success = await LoginApiModel.login(email, password);
+    String? success = await LoginApiModel.login(email, password);
 
-    if (success) {
+    if (success != null) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage(userEmail: email)),
