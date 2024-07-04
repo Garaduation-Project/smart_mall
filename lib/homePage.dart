@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                                   Center(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          40.0, 25.0, 40.0, 0.0),
+                                          30.0, 25.0, 40.0, 0.0),
                                       child: FadeInUp(
                                         child: MaterialButton(
                                             onPressed: () {
@@ -309,3 +309,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
