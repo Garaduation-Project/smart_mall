@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:parking/parking_payment.dart';
 import 'package:parking/paymentScreen.dart';
-
+import 'package:parking/paymob_manager/paymobManager.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -10,10 +9,10 @@ class BookingPage extends StatefulWidget {
 }
 
 class PriceInfoBox extends StatelessWidget {
-  final double hourPrice;
+  final double minutePrice;
   final double totalPrice;
 
-  PriceInfoBox({required this.hourPrice, required this.totalPrice});
+  PriceInfoBox({required this.minutePrice, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +29,9 @@ class PriceInfoBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPriceRow(
-                  'Hour Price:', '\$${hourPrice.toStringAsFixed(2)}'),
+                  'Minute Price:', '\EGP ${minutePrice.toStringAsFixed(2)}'),
               SizedBox(height: 30),
-              _buildPriceRow('Total:', '\$${totalPrice.toStringAsFixed(2)}'),
+              _buildPriceRow('Total:', '\EGP${totalPrice.toStringAsFixed(2)}'),
             ],
           ),
         ),
@@ -83,7 +82,7 @@ class ParkingCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildInfoTile(Icons.access_time, '4 hours'),
+                _buildInfoTile(Icons.access_time, '60 minutes'),
                 _buildInfoTile(Icons.location_on, 'A-6'),
               ],
             ),
@@ -107,6 +106,8 @@ class ParkingCard extends StatelessWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
+  get totalPrice => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,8 +144,8 @@ class _BookingPageState extends State<BookingPage> {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Center(
                 child: PriceInfoBox(
-                  hourPrice: 3,
-                  totalPrice: 12,
+                  minutePrice: 0.25,
+                  totalPrice: 15,
                 ),
               ),
             ]),
@@ -153,7 +154,6 @@ class _BookingPageState extends State<BookingPage> {
           // const SizedBox(height: 16),
           GestureDetector(
             onTap: () async => _pay(),
-
             child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 40, 30, 50),
               child: Container(
@@ -186,6 +186,7 @@ class _BookingPageState extends State<BookingPage> {
       ),
     );
   }
+
   Future<void> _pay() async {
     PaymobManager()
         .getPaymentKey(totalPrice.toInt(), "EGP")
