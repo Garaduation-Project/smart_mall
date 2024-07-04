@@ -2,9 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-
 import 'logIN.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,9 +51,9 @@ class HomePage0 extends StatelessWidget {
                       child: Text(
                         'Hello dear',
                         style: TextStyle(
-                            color: Color.fromRGBO(189, 185, 191, 1),
+                            color: Colors.grey,
                             fontSize: 20,
-                            fontFamily: 'Padauk'),
+                            fontFamily: 'Inter'),
                       ),
                     ),
                     Padding(
@@ -65,44 +63,45 @@ class HomePage0 extends StatelessWidget {
                         child: Text(
                           'We Hope You Enjoy Your Shopping',
                           style: TextStyle(
-                              color: Color.fromRGBO(189, 185, 191, 1),
+                              color: Colors.grey,
                               fontSize: 16,
-                              fontFamily: 'Padauk'),
+                              fontFamily: 'Inter'),
                         ),
                       ),
                     ),
                     Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 60.0),
+                          const EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 60.0),
                       child: FadeInUp(
                         child: MaterialButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NameScreen(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              ' Get Started  → ',
-                              style: TextStyle(
-                                color: Color.fromRGBO(238, 238, 238, 1),
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NameScreen(),
                               ),
+                            );
+                          },
+                          child: Text(
+                            ' Get Started  ',
+                            style: TextStyle(
+                              color: Color.fromRGBO(238, 238, 238, 1),
+                              fontSize: 24.0,
+                              fontFamily: 'Cantoraone',
+                              fontWeight: FontWeight.bold,
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              side: BorderSide(
-                                  color: Color.fromRGBO(88, 80, 141, 1),
-                                  width: 1.0),
-                            ),
-                            color: Color.fromRGBO(88, 80, 141, 1),
-                            textColor: Colors.black,
-                            padding: EdgeInsets.fromLTRB(10, 16, 10, 16)
-                            // minWidth: double.infinity,
-                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                                color: Color.fromRGBO(88, 80, 141, 1),
+                                width: 1.0),
+                          ),
+                          color: Color.fromRGBO(88, 80, 141, 1),
+                          textColor: Colors.black,
+                          padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
+                          minWidth: 300,
+                        ),
                       ),
                     ),
                   ], //
@@ -115,4 +114,3 @@ class HomePage0 extends StatelessWidget {
     );
   }
 }
-
