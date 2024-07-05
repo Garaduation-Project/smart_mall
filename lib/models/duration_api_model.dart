@@ -24,7 +24,15 @@ class DurationApiModel {
 
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
-      final List<double> durations = responseData.map((e) => (e['duration'] as num).toDouble()).toList();
+      // Map response entries to calculate durations, setting duration to 0 if exit_time is null
+      final List<double> durations = responseData.map((e) {
+        if (e['exited_at'] == null) {
+          return 0.0; // Set duration to 0 if exit_time is null
+        } else {
+          return (e['duration'] as num).toDouble();
+        }
+      }).toList();
+
       return {'success': true, 'durations': durations};
     } else {
       print('Failed to fetch durations. Status code: ${response.statusCode}');
