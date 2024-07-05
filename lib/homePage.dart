@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    email = widget.userEmail ?? ""; // Initialize with userEmail if available
+    email = widget.userEmail ?? "";
   }
 
   Future<void> fetchUserDetails() async {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromRGBO(88, 80, 141, 0.3),
               ),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('images/profile.jpg'),
+                backgroundImage: AssetImage('images/login.png'),
               ),
               accountName: Text(
                 'Hello! ' + email,
@@ -124,6 +124,66 @@ class _HomePageState extends State<HomePage> {
               onTap: logOut,
               title: Text(
                 'Log Out',
+                style: TextStyle(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+            ),
+            Divider(
+              color: Colors.grey,
+              thickness: 1,
+              indent: 25,
+              endIndent: 25,
+            ),
+            SizedBox(
+              height: 60,
+              child: Center(
+                  child: Text(
+                'Contact Us',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Cantoraone',
+                  fontSize: 26,
+                ),
+              )),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.phone,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                '+20 1026383650',
+                style: TextStyle(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.email,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'KhaledCse2024@outlook.com',
+                style: TextStyle(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.location_on,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'Omar Ibn Elkhttab st. vell Algamaae, Zagazig, Egypt',
                 style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
@@ -309,4 +369,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
