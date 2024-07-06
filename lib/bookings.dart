@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:parking/paymentScreen.dart';
-import 'package:parking/paymob_manager/paymobManager.dart';
-import 'package:parking/models/duration_api_model.dart';
+
+import 'paymob_manager/paymobManager.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -10,10 +9,10 @@ class BookingPage extends StatefulWidget {
 }
 
 class PriceInfoBox extends StatelessWidget {
-  final double minutePrice;
+  final double hourPrice;
   final double totalPrice;
 
-  PriceInfoBox({required this.minutePrice, required this.totalPrice});
+  PriceInfoBox({required this.hourPrice, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +29,9 @@ class PriceInfoBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPriceRow(
-                  'Minute Price:', '\EGP ${minutePrice.toStringAsFixed(2)}'),
+                  'Hour Price:', 'EGP ${hourPrice.toStringAsFixed(2)}'),
               SizedBox(height: 30),
-              _buildPriceRow('Total:', '\EGP${totalPrice.toStringAsFixed(2)}'),
+              _buildPriceRow('Total:', 'EGP ${totalPrice.toStringAsFixed(2)}'),
             ],
           ),
         ),
@@ -57,16 +56,7 @@ class PriceInfoBox extends StatelessWidget {
   }
 }
 
-class ParkingCard extends StatefulWidget {
-  final double duration;
-
-  ParkingCard({required this.duration});
-
-  @override
-  _ParkingCardState createState() => _ParkingCardState();
-}
-
-class _ParkingCardState extends State<ParkingCard> {
+class ParkingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -82,7 +72,7 @@ class _ParkingCardState extends State<ParkingCard> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                'images/bookings.png', // Replace with your image path
+                'images/lot1.png', // Replace with your image path
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -92,7 +82,7 @@ class _ParkingCardState extends State<ParkingCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildInfoTile(Icons.access_time, '${widget.duration} minutes'),
+                _buildInfoTile(Icons.access_time, '4 hours'),
                 _buildInfoTile(Icons.location_on, 'A-6'),
               ],
             ),
@@ -116,44 +106,8 @@ class _ParkingCardState extends State<ParkingCard> {
 }
 
 class _BookingPageState extends State<BookingPage> {
-  List<double>? durations;
-  bool isLoading = false;
-  double minutePrice = 0.25;
-  double totalPrice = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchDurations();
-  }
-
-  void fetchDurations() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    final result = await DurationApiModel.fetchDuration();
-    if (result['success']) {
-      setState(() {
-        durations = (result['durations'] as List<dynamic>).map((e) => e as double).toList();
-        calculateTotalPrice();
-      });
-    } else {
-      print('Failed to load durations');
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  void calculateTotalPrice() {
-    if (durations != null && durations!.isNotEmpty) {
-      setState(() {
-        totalPrice = durations!.first * minutePrice;
-      });
-    }
-  }
+  double totalPrice = 12.0;
+  double hourPrice = 3.0; // Make totalPrice a member variable
 
   @override
   Widget build(BuildContext context) {
@@ -176,63 +130,58 @@ class _BookingPageState extends State<BookingPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                    child: durations == null
-                        ? Text('Failed to load durations')
-                        : ParkingCard(duration: durations!.first),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+              child: ParkingCard(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Center(
+                child: PriceInfoBox(
+                  hourPrice: hourPrice,
+                  totalPrice: totalPrice,
+                ),
+              ),
+            ]),
+          ),
+          GestureDetector(
+            onTap: () async => _pay(),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30, 40, 30, 50),
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                decoration: ShapeDecoration(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: PriceInfoBox(
-                            minutePrice: minutePrice,
-                            totalPrice: totalPrice,
-                          ),
-                        ),
-                      ]),
-                ),
-                GestureDetector(
-                  onTap: () async => _pay(),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 40, 30, 50),
-                    child: Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: ShapeDecoration(
-                        color: Color.fromRGBO(88, 80, 141, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Complete Payment',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontFamily: 'Cantoraone',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                          ),
-                        ),
-                      ),
+                child: Center(
+                  child: Text(
+                    'Complete Payment',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontFamily: 'Cantoraone',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 
