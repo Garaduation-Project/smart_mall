@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/bookings.dart';
 import 'package:parking/logIN.dart';
+import 'package:parking/map/google_map_page.dart';
 import 'package:parking/models/logout_api_model.dart';
 import 'package:parking/parkingScreen.dart';
 import 'package:parking/scanQR.dart';
@@ -118,6 +119,26 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(
+                Icons.map,
+                color: Color.fromRGBO(88, 80, 141, 1),
+              ),
+              title: Text(
+                'Get Directions',
+                style: TextStyle(
+                  color: Color.fromRGBO(88, 80, 141, 1),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
                 Icons.logout,
                 color: Color.fromRGBO(88, 80, 141, 1),
               ),
@@ -127,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 20,
                 ),
               ),
             ),
@@ -159,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -173,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -187,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   color: Color.fromRGBO(88, 80, 141, 1),
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 18,
                 ),
               ),
             ),
