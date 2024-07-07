@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:parking/models/duration_api_model.dart';
 import 'package:parking/paymentScreen.dart';
 import 'package:parking/paymob_manager/paymobManager.dart';
-import 'package:parking/models/duration_api_model.dart';
 
 class BookingPage extends StatefulWidget {
   @override
@@ -238,21 +237,49 @@ class _BookingPageState extends State<BookingPage> {
     );
   }
 
- Future<void> _pay() async {
-    PaymobManager()
-        .getPaymentKey(totalPrice.toInt(), "EGP")
-        .then((String paymentKey) {
-      Navigator.pop(context); // Hide loading dialog
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PaymentWebView(
-            paymentUrl:
-                "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey",
-            price: totalPrice, // Pass totalPrice to PaymentWebView
+  Future<void> _pay() async {
+    // Ensure the totalPrice is calculated before using it in the payment process
+    if (totalPrice > 0) {
+      _showLoadingDialog(context);
+      PaymobManager()
+          .getPaymentKey(totalPrice.toInt(), "EGP")
+          .then((String paymentKey) {
+        Navigator.pop(context); // Hide loading dialog
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebView(
+              paymentUrl:
+                  "https://accept.paymob.com/api/acceptance/iframes/840752?payment_token=$paymentKey",
+              price: totalPrice, // Pass totalPrice to PaymentWebView
+            ),
           ),
-        ),
-      );
-    });
+        );
+      });
+    } else {
+      print('Total price is not calculated yet.');
+    }
+  }
+
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Loading..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
