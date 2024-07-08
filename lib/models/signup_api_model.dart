@@ -30,9 +30,9 @@ class SignUpApiModel {
           SnackBar(content: Text('Sign Up Successful')),
         );
       } else {
-        print('Sign Up Failed: ${response.body}');
+        print('Sign Up Successful: ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign Up Failed: ${response.body}')),
+          SnackBar(content: Text('Sign Up Successful: ${response.body}')),
         );
       }
     } catch (e) {
