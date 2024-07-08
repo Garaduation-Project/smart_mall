@@ -18,7 +18,7 @@ class ReservationApiModel {
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Cookie': 'jwt=$token', 
+        'Cookie': 'jwt=$token',
       },
     );
 
@@ -27,10 +27,10 @@ class ReservationApiModel {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String reservationCode = responseData['reservation_code'];
       print('Reservation successful. Code: $reservationCode');
-      
+
       // Save the reservation code securely
       await storage.write(key: 'reservation_code', value: reservationCode);
-      
+
       return {'success': true, 'code': reservationCode};
     } else {
       // Reservation failed
@@ -38,7 +38,7 @@ class ReservationApiModel {
       return {'success': false, 'code': null};
     }
   }
-
+  
   // Method to retrieve the saved reservation code
   static Future<String?> getReservationCode() async {
     return await storage.read(key: 'reservation_code');
