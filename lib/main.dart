@@ -2,6 +2,8 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:parking/homePage.dart';
+import 'package:parking/models/login_api_model.dart';
 import 'logIN.dart';
 
 void main() {
@@ -74,14 +76,26 @@ class HomePage0 extends StatelessWidget {
                           const EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 60.0),
                       child: FadeInUp(
                         child: MaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NameScreen(),
-                              ),
-                            );
-                          },
+                            onPressed: () async {
+                              String? token = await LoginApiModel.getToken();
+
+                              if (token != null) {
+                                
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NameScreen(),
+                                  ),
+                                );
+                              }
+                            },
                           child: Text(
                             ' Get Started  ',
                             style: TextStyle(
