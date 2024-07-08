@@ -1,10 +1,59 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/thankYouView.dart';
 
-class ThankYouView extends StatelessWidget {
+class ThankYouView extends StatefulWidget {
   final double price;
+  final bool paymentSuccessful;
 
-  const ThankYouView({super.key, required this.price});
+  const ThankYouView(
+      {super.key, required this.price, required this.paymentSuccessful});
+
+  @override
+  State<ThankYouView> createState() => _ThankYouViewState();
+}
+
+class _ThankYouViewState extends State<ThankYouView> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.paymentSuccessful) {
+      _notifyBackend();
+    }
+  }
+
+  Future<void> _notifyBackend() async {
+    Dio dio = Dio();
+    final data = {'status': 'success', 'code': '5555'};
+    print('Sending data to backend: $data');
+    try {
+      final response = await dio.post(
+        'https://cse-parking.up.railway.app/api/receive-reservation-code/',
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Backend notified successfully: ${response.data}');
+      } else {
+        print('Failed to notify backend: ${response.data}');
+      }
+    } catch (e) {
+      print('Failed to notify backend: $e');
+      if (e is DioError) {
+        print('Dio Error: ${e.response?.data}');
+        print('Dio Headers: ${e.response?.headers}');
+        print('Dio Request: ${e.requestOptions}');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +66,7 @@ class ThankYouView extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              ThankYouCard(price: price),
+              ThankYouCard(price: widget.price),
               Positioned(
                 bottom: MediaQuery.sizeOf(context).height * .2 + 20,
                 left: 20 + 8,
@@ -74,3 +123,4 @@ class ThankYouView extends StatelessWidget {
     );
   }
 }
+
