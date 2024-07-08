@@ -5,9 +5,10 @@ import 'package:parking/thankYouView.dart';
 class ThankYouView extends StatefulWidget {
   final double price;
   final bool paymentSuccessful;
+  final String reservationCode;
 
   const ThankYouView(
-      {super.key, required this.price, required this.paymentSuccessful});
+      {super.key, required this.price, required this.paymentSuccessful, required this.reservationCode});
 
   @override
   State<ThankYouView> createState() => _ThankYouViewState();
@@ -24,7 +25,7 @@ class _ThankYouViewState extends State<ThankYouView> {
 
   Future<void> _notifyBackend() async {
     Dio dio = Dio();
-    final data = {'status': 'success', 'code': '5555'};
+    final data = {'status': 'success', 'code': widget.reservationCode};
     print('Sending data to backend: $data');
     try {
       final response = await dio.post(
@@ -123,4 +124,3 @@ class _ThankYouViewState extends State<ThankYouView> {
     );
   }
 }
-
