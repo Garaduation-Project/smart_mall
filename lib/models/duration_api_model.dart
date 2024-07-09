@@ -22,12 +22,8 @@ class DurationApiModel {
       },
     );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      // Map response entries to calculate durations, setting duration to 0 if exit_time is null
-      final List<double> durations = responseData.map((e) {
-        if (e['exited_at'] == null) {
-          return 0.0; // Set duration to 0 if exit_time is null
+   if (e['exited_at'] == null) {
+          return (e['duration'] as num).toDouble();
         } else {
           return (e['duration'] as num).toDouble();
         }
